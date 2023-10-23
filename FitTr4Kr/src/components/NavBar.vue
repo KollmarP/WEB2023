@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
-//import FlyoutPanel from './FlyoutPanel.vue';
 
 const isActive = ref(false);
 const isShoppingCartOpen = ref(false);
