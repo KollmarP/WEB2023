@@ -1,6 +1,9 @@
 import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '../views/LoginView.vue'
+import AdminView from '../views/AdminView.vue'
+import FriendsView from '../views/FriendsView.vue'
+import ActivityView from '../views/ActivityView.vue'
 import { getSession } from '@/model/session';
 
 const router = createRouter({
@@ -16,6 +19,21 @@ const router = createRouter({
       name: "login", 
       component: LoginView 
     },
+    { 
+      path: "/admin", 
+      name: "admin", 
+      component: AdminView
+    },    
+    { 
+      path: "/friends", 
+      name: "friends", 
+      component: FriendsView
+    },  
+    { 
+      path: "/activities", 
+      name: "activities", 
+      component: ActivityView
+    },      
   ],
 });
 
