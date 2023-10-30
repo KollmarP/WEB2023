@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { getSession, useLogin } from '@/model/session'
+  import { getSession, useLogin } from '../model/session'
 
   const session = getSession()
   const { login, logout } = useLogin()
@@ -16,7 +16,7 @@
 
 <template>
   <div class="has-text-right" v-if="session.user">
-    Welcome, {{ session.user.firstName }} {{ session.user.lastName }} <br>
+    Welcome, {{ session.user.personalData.firstName }} {{ session.user.personalData.lastName }} <br>
     <small>
       {{ session.user.email }}
       <a class="button is-small is-light is-warning" @click.prevent="doLogout">
