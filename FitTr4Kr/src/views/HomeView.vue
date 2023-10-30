@@ -17,7 +17,6 @@ import { ref } from 'vue';
     (tabState.value == 'Completed' && task.completed) ||
     tabState.value == 'All';
 
-
 </script>
 
 <template>

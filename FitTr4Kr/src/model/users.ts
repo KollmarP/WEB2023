@@ -1,10 +1,12 @@
 import { ref } from 'vue';
 import data from '../components/data/users.json';
 
-const users = ref(data.users.map(user => new User(user)));
+export function getUsers(): User[] {
+  return data.users.map( x => new User(x) ) 
+}
 
 export function getUserByEmail(email: string): User | undefined {
-  return users.value.find( x => x.personalData.email === email);
+  return getUsers().find( x => x.personalData.email === email );
 }
 
 export class User {
@@ -39,9 +41,9 @@ export class User {
 
   public constructor(user?:any, id?: number, isAdmin?: boolean, personalData?: PersonalData) {
     if( user != undefined) {
-      this.personalData = ref(user.map((user: PersonalData) => ({...user} as PersonalData)));
-      this.isAdmin = user.isAdmin == "false"
+      this.personalData = user.map({...user} as PersonalData);
       this.id = parseInt(user.id);
+      this.isAdmin = (this.id <= 5);
       return;
     }
     if( id == undefined || isAdmin == undefined) throw new Error("id and isAdmin must be defined");

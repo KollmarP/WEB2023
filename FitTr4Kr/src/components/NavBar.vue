@@ -2,11 +2,13 @@
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
-import FlyoutPanel from './FlyoutPanel.vue';
 import ExerciseMenu from './ExerciseMenu.vue';
+import { getSession, useLogin } from '../model/session'
 
 const isActive = ref(false);
 const isExerciseMenuOpen = ref(false);
+
+const session = getSession()
 
 </script>
 
@@ -26,8 +28,9 @@ const isExerciseMenuOpen = ref(false);
 
     <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-start">
-        <RouterLink class="navbar-item" to="/about">About</RouterLink>
-        <RouterLink class="navbar-item" to="/products">Products</RouterLink>
+        <RouterLink class="navbar-item" to="/activity">Your Activities</RouterLink>
+        <RouterLink class="navbar-item" to="/friends">Friends Activities</RouterLink>
+        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.isAdmin">Adimn</RouterLink>
         
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
