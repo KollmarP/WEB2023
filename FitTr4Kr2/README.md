@@ -1,4 +1,4 @@
-# FitTr4kr2
+# FitTr4Kr2
 
 This template should help get you started developing with Vue 3 in Vite.
 
