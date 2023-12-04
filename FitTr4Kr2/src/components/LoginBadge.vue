@@ -16,9 +16,9 @@
 
 <template>
   <div class="has-text-right" v-if="session.user">
-    Welcome, {{ session.user.personalData.firstName }} {{ session.user.personalData.lastName }} <br>
+    Welcome, {{ session.user.firstName }} {{ session.user.lastName }} <br>
     <small>
-      {{ session.user.personalData.email }}
+      {{ session.user.email }}
       <a class="button is-small is-light is-warning" @click.prevent="doLogout">
         <span class="icon">
           <i class="fas fa-sign-out-alt"></i>
