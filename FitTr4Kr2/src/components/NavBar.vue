@@ -30,7 +30,7 @@ const session = getSession()
       <div class="navbar-start">
         <RouterLink class="navbar-item" to="/activity">Your Activities</RouterLink>
         <RouterLink class="navbar-item" to="/friends">Friends Activities</RouterLink>
-        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.isAdmin">Adimn</RouterLink>
+        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.role == 'admin'">Adimn</RouterLink>
         
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
