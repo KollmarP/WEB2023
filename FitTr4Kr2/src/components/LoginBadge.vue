@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { getSession, useLogin } from '@/model/session';
+  import {getSe}
 
   const session = getSession()
   const { login, logout } = useLogin()
