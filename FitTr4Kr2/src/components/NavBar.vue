@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import LoginBadge from './LoginBadge.vue';
 import ExerciseMenu from './ExerciseMenu.vue';
-import { getSession, useLogin } from '../model/session'
+import { getSession } from '@/model/session';
 
 const isActive = ref(false);
 const isExerciseMenuOpen = ref(false);
@@ -30,7 +30,7 @@ const session = getSession()
       <div class="navbar-start">
         <RouterLink class="navbar-item" to="/activity">Your Activities</RouterLink>
         <RouterLink class="navbar-item" to="/friends">Friends Activities</RouterLink>
-        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.role == 'admin'">Adimn</RouterLink>
+        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.role == 'admin'">Admin</RouterLink>
         
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">

@@ -1,0 +1,51 @@
+
+{
+    "users": [
+    {
+        "id" : 1,
+        "firstName" : "Peter",
+        "lastName" : "Generic",
+        "email" : "Peter@email.com",
+        "photo" : "https://th.bing.com/th/id/OIP.0MkfBo9Tf08v5EKc94gXcQAAAA?rs=1&pid=ImgDetMain",
+        "password" : "Peter",
+        "isAdmin" : true,
+        "exercises" : [],
+        "friends":[
+            2,
+            3
+        ]
+    },
+    {
+        "id" : 2,
+        "firstName" : "Charlie",
+        "lastName" : "Generic",
+        "email" : "Charlie@NewPaltz.com",
+        "photo" : "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/77546e83-4a68-4264-99f7-6bdfc8f0eaf8/dci6r36-c132f132-8320-42be-9565-6741c6a05972.png/v1/fill/w_809,h_988,strp/paper_mario__jumping__remake_by_fawfulthegreat64_dci6r36-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTI1MCIsInBhdGgiOiJcL2ZcLzc3NTQ2ZTgzLTRhNjgtNDI2NC05OWY3LTZiZGZjOGYwZWFmOFwvZGNpNnIzNi1jMTMyZjEzMi04MzIwLTQyYmUtOTU2NS02NzQxYzZhMDU5NzIucG5nIiwid2lkdGgiOiI8PTEwMjQifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.Pp9z9IYg76GI0yKMT-vYPoHUOFwYKsiI08ye_IZpPJM",
+        "password" : "Charlie",
+        "isAdmin" : false,
+        "exercises" : [],
+        "friends": [
+            1,
+            3
+        ]
+    },
+    {
+        "id" : 3,
+        "firstName" : "Tom",
+        "lastName" : "Generic",
+        "email" : "Tom@Coffee.com",
+        "photo" : "https://play.nintendo.com/images/Masthead_DK.17345b1513ac044897cfc243542899dce541e8dc.9afde10b.png",
+        "password" : "Tom",
+        "isAdmin" : false,
+        "exercises" : [
+        ],
+
+        "friends": [
+            1,
+            3
+        ]
+    }
+  ]
+}
+
+   
