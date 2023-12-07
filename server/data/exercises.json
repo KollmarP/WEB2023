@@ -1,0 +1,23 @@
+{
+    "Resistence" : [
+        {
+            "id" : 1,
+            "name" : "Weightlifting : General",
+            "base weight" : 125,
+            "base burn" : 90,
+            "function of weight" : 0.6,
+            "per min" : 30
+        },
+        {
+            "id" : 2,
+            "name" : "Weightlifting : Intense",
+            "base weight" : 125,
+            "base burn" : 180,
+            "function of weight" : 1.2,
+            "per min" : 30
+        },
+        {
+            
+        }
+    ]
+}

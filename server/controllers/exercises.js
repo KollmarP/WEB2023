@@ -27,7 +27,7 @@ router
             res.send(exercise);
         }).catch(next)
     })
-    .update('/', (req, res, next) => {
+    .patch('/', (req, res, next) => {
         updateExercise(req.body)
         .then((exercise) => {
             res.send(exercise);

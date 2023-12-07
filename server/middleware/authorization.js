@@ -1,38 +1,25 @@
 const users = require('../models/users');
 
 module.exports = {
-    parseAuthorizationHeader(req, res, next) {
-        const token = req.headers.authorization?.split(' ')[1];
-        if (token) {
-           users.verifyTokenAsync(token)
-                .then(user => {
-                    if (user) {
-                        req.user = user;
-                    }
-                    next();
-                }
-                ).catch(err=> {
-                    next({ code: 401, message: err });
-                }
-                );
-        } else {
-            next();
+    async parseAuthorizationToken(req, res, next) {
+        const authHeader = req.headers.authorization;
+        const token = authHeader?.split(' ')[1];
+        if (!token) {
+            return next();
         }
+        const payload = await userModel.verifyJWT(token);
+        req.user = payload;
+        next();
     },
-
-
-    
-    requireLogin(requireAdmin = false) {
+    requireUser(requireAdmin = false) {
         return (req, res, next) => {
-            if (req.user) {
-                if (requireAdmin && req.user.role !== 'admin') {
-                    next({ code: 403, message: 'Admin required' });
-                } else {
-                    next();
-                }
-            } else {
-                next({ code: 401, message: 'Login required' });
+            if(!req.user) {
+                return next({
+                    status: 401,
+                    message: 'You must be logged in to complete this action.'
+                });
             }
+            next();
         };
     }
 };
