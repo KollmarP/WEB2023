@@ -22,9 +22,9 @@ import { ref } from 'vue';
 <template>
   <main class="columns is-multiline is-centered">
     <div class="column is-full">
-      <h1 class="title" >Home</h1>
-      <h2 class="subtitle">
-        Welcome to your Vue.js + TypeScript app
+      <h1 class="title is-centered" >Home</h1>
+      <h2 class="subtitle is-centered">
+        Welcome to the FitTr4Kr App! We let you log your workouts and compare with your friends!
       </h2>
     </div>
 

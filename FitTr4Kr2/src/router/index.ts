@@ -1,10 +1,11 @@
-import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import AdminView from '../views/AdminView.vue'
-import FriendsView from '../views/FriendsView.vue'
-import ActivityView from '../views/ActivityView.vue'
+import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import LoginView from '../views/LoginView.vue';
+import AdminView from '../views/AdminView.vue';
+import FriendsView from '../views/FriendsView.vue';
+import ExercisesView from '../views/ExercisesView.vue';
 import { getSession } from '@/model/session';
+import ExercisesVue from '@/components/Exercises.vue';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -30,9 +31,9 @@ const router = createRouter({
       component: FriendsView
     },  
     { 
-      path: "/activities", 
-      name: "activities", 
-      component: ActivityView
+      path: "/exercises", 
+      name: "exercises", 
+      component: ExercisesView
     },      
   ],
 });

@@ -60,3 +60,16 @@ export function useLogin(){
     }
   }
 }
+
+export async function serverLogin(email : string, password : string) : Promise<User> {
+  const router = useRouter();
+  const user = await api('users/login', {email,password}, 'POST')
+
+  session.user = user.data.user;
+
+  if (session.user){
+    session.user.token = user.data.token;
+  }
+
+  return user.data.user;
+}

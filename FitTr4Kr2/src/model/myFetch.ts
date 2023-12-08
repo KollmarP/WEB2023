@@ -19,4 +19,3 @@ export function rest(url: string, body?: unknown, method?: string, headers?: Hea
 export function api(action: string, body?: unknown, method?: string, headers?: HeadersInit){
     return rest(`${API_ROOT}/${action}`, body, method, headers);
 }
-
