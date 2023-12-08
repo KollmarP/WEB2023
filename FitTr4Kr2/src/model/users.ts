@@ -1,20 +1,27 @@
 import { api } from "./session";
+import { type Exercise  } from "./exercises";
 
 export interface User {
   id?: number,
   firstName: string,
   lastName: string,
   email: string,
+  photo: string,
   password: string,
-  role: "admin" | "user",
+  isAdmin: boolean,
   token?: string
+  exercises : Exercise[];
+  friends : User[];
 }
 
 export function getUsers(): Promise< User[]> {
-  return api("users"); 
+  return api('users'); 
 }
 
 export async function getUserByEmail(email: string): Promise<User | undefined> {
-  const users = await getUsers();
-  return users.find( x => x.email === email );
+  return api(`users/${email}`)
+}
+
+export function deleteUser(){
+  return api('users/', undefined, 'DELETE')
 }

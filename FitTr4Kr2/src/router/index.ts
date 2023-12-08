@@ -1,6 +1,5 @@
 import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import LoginView from '../views/LoginView.vue';
 import AdminView from '../views/AdminView.vue';
 import FriendsView from '../views/FriendsView.vue';
 import ExercisesView from '../views/ExercisesView.vue';
@@ -14,11 +13,6 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
-    },
-    { 
-      path: "/login", 
-      name: "login", 
-      component: LoginView 
     },
     { 
       path: "/admin", 

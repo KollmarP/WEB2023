@@ -10,10 +10,7 @@
         "password" : "Peter",
         "isAdmin" : true,
         "exercises" : [],
-        "friends":[
-            2,
-            3
-        ]
+        "friends":[]
     },
     {
         "id" : 2,
@@ -24,10 +21,7 @@
         "password" : "Charlie",
         "isAdmin" : false,
         "exercises" : [],
-        "friends": [
-            1,
-            3
-        ]
+        "friends": []
     },
     {
         "id" : 3,
@@ -37,13 +31,8 @@
         "photo" : "https://play.nintendo.com/images/Masthead_DK.17345b1513ac044897cfc243542899dce541e8dc.9afde10b.png",
         "password" : "Tom",
         "isAdmin" : false,
-        "exercises" : [
-        ],
-
-        "friends": [
-            1,
-            3
-        ]
+        "exercises" : [],
+        "friends": []
     }
   ]
 }

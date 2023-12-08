@@ -4,7 +4,9 @@ const data = require("../data/users.json");
 //web token and handlers
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
+console.log(JWT_SECRET)
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+console.log(JWT_EXPIRES_IN)
 
 //grabs all user data
 function getAll(){
@@ -18,6 +20,15 @@ function getUserByID(id){
         throw new Error('User not found');
     }
     return item;
+}
+
+//gets User by Email
+function getUserByEmail(email){
+  const item = data.users.find(x => x.email === email);
+  if(!item){
+    throw new Error('User not found');
+  }
+  return item;
 }
 
 //searches user by name, email, or username
@@ -45,16 +56,14 @@ function createUser(values) {
 
 //register new user with validation
 function registerUser(values) {  
-    const exists = data.users.some(x => x.username === values.username);
+    const exists = data.users.some(x => x.email === values.email);
     if(exists) {
-      throw new Error('Username already exists');
+      throw new Error('Email already in use.');
     }
   
     if(values.password.length < 8) {
       throw new Error('Password must be at least 8 characters');
     }
-  
-    // TODO: Make sure user is create with least privileges
   
     const newItem = {
       id: data.users.length + 1,
@@ -62,8 +71,7 @@ function registerUser(values) {
     };
   
     data.users.push(newItem);
-    return newItem;
-  
+    return newItem
 }
 
 //login function
@@ -134,5 +142,5 @@ function verifyJWT(token) {
 }
 
 module.exports = {
-    getAll, getUserByID, searchUserByName, createUser, updateUser, deleteUser, login, registerUser, generateJWT, verifyJWT
+    getAll, getUserByID, getUserByEmail, searchUserByName, createUser, updateUser, deleteUser, login, registerUser, generateJWT, verifyJWT
   };

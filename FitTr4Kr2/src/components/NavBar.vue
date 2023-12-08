@@ -1,14 +1,23 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
-import LoginBadge from './LoginBadge.vue';
+import { RouterLink, useRouter } from 'vue-router';
 import ExerciseMenu from './ExerciseMenu.vue';
+import LoginPopup from './LoginPopup.vue'
 import { getSession } from '@/model/session';
+import RegisterPopup from './RegisterPopup.vue';
 
 const isActive = ref(false);
 const isExerciseMenuOpen = ref(false);
 
 const session = getSession()
+const router = useRouter();
+const isLoginViewOpen = ref(false);
+const isRegViewOpen = ref(false);
+
+function logout() {
+  isLoginViewOpen.value = false;
+  session.user = null;
+}
 
 </script>
 
@@ -28,9 +37,9 @@ const session = getSession()
 
     <div id="navbarBasicExample" class="navbar-menu" :class="{ 'is-active': isActive }">
       <div class="navbar-start">
-        <RouterLink class="navbar-item" to="/activity">Your Activities</RouterLink>
+        <RouterLink class="navbar-item" to="/exercises">Your Activities</RouterLink>
         <RouterLink class="navbar-item" to="/friends">Friends Activities</RouterLink>
-        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.role == 'admin'">Admin</RouterLink>
+        <RouterLink class="navbar-item" to="/admin" v-if="session.user?.isAdmin">Admin</RouterLink>
         
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link">
@@ -64,13 +73,55 @@ const session = getSession()
           </a>
         </div>
         <div class="navbar-item">
-          <LoginBadge />
+          <div class="has-text-right" v-if="session.user">
+            Welcome, {{ session.user.firstName }} {{ session.user.lastName }} <br>
+            <small>
+              {{ session.user.email }}
+            </small>
+            <a class="button is-small is-light is-warning" @click.prevent="logout">
+              <span class="icon">
+                <i class="fas fa-sign-out-alt"></i>
+              </span>
+            </a>
+          </div>
+          <div class="buttons" v-else>
+            <a class="button is-primary" :class="{ 'is-active': isRegViewOpen }" @click.prevent="isRegViewOpen = true">
+              <strong>Sign up</strong>
+            </a>
+            <a class="button" :class="{ 'is-active': isLoginViewOpen }" @click.prevent="isLoginViewOpen = true">
+              Login
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </nav>
   <ExerciseMenu  :class="{ 'is-active': isExerciseMenuOpen }">
   </ExerciseMenu>
+  <div class="modal" :class = "{'is-active': isLoginViewOpen && !session.user}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Login</p>
+        <button class="delete" aria-label="close" @click.prevents="isLoginViewOpen = false"></button>
+      </header>
+      <section class="modal-card-body">
+        <LoginPopup/>
+      </section>
+    </div>
+  </div>
+  <div class="modal" :class = "{'is-active': isRegViewOpen && !session.user}">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Login</p>
+        <button class="delete" aria-label="close" @click.prevents="isRegViewOpen = false"></button>
+      </header>
+      <section class="modal-card-body">
+        <RegisterPopup/>
+      </section>
+    </div>
+  </div>
 </template>
 
 

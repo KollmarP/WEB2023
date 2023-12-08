@@ -61,15 +61,34 @@ export function useLogin(){
   }
 }
 
-export async function serverLogin(email : string, password : string) : Promise<User> {
-  const router = useRouter();
-  const user = await api('users/login', {email,password}, 'POST')
+export async function serverLogin(email : string, password : string) : Promise<User | undefined> {
+  const person = await api('users/login', {email,password}, 'POST');
 
-  session.user = user.data.user;
-
-  if (session.user){
-    session.user.token = user.data.token;
+  if(!person){
+    return undefined;
   }
 
-  return user.data.user;
+  session.user = person.user;
+
+  if (session.user){
+    session.user.token = person.token;
+  }
+
+  return person.user;
+}
+
+export async function userRegister(firstName : string, lastName : string, email : string, photo : string, password : string) : Promise<User | undefined>{
+  const router = useRouter();
+  const person = await api('users/register', {firstName,lastName,email,photo,password},'POST');
+  if(!person){
+    return undefined;
+  }
+
+  session.user = person.user;
+
+  if(session.user){
+    session.user.token = person.token;
+  }
+
+  return person.user;
 }
