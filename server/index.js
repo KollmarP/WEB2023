@@ -11,7 +11,7 @@ const PORT = process.env.PORT ?? 3000;
 console.log(`The best class at SUNY New Paltz is ${process.env.BEST_CLASS}`);
 
 app
-    .use('/', express.static(path.join( __dirname, '../client/dist/') ) )
+    .use('/', express.static(path.join( __dirname, '../FitTr4Kr2/dist/') ) )
     .use(express.json())
 
     // CORS
