@@ -1,5 +1,10 @@
 //data grab
-const data = require("../data/users.json");
+const { connect, ObjectId } = require('./Mongo');
+async function data() {
+  const db = await connect();
+  return db.collection('Users');
+}
+
 
 //web token and handlers
 const jwt = require('jsonwebtoken');
@@ -9,22 +14,20 @@ const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
 console.log(JWT_EXPIRES_IN)
 
 //grabs all user data
-function getAll(){
-    return data.users;
+async function getAll(){
+  return await data();
 }
 
 //gets user by id
-function getUserByID(id){
-    const item = data.users.find(x => x.id === id);
-    if(!item){
-        throw new Error('User not found');
-    }
-    return item;
+async function getUserByID(id){
+  const data = await data();
+  const item = await data.findOne({ id: new ObjectId(id) });
+  return item;
 }
 
 //gets User by Email
-function getUserByEmail(email){
-  const item = data.users.find(x => x.email === email);
+async function getUserByEmail(email){
+  const item = await data().find(x => x.email === email);
   if(!item){
     throw new Error('User not found');
   }
@@ -32,85 +35,93 @@ function getUserByEmail(email){
 }
 
 //searches user by name, email, or username
-function searchUserByName(query){
-    return data.filter(x => {
+async function searchUserByName(query){
+    return data().filter(x => {
         return (
-            x.firstName.toLowerCase().includes(query.toLowerCase()) ||
-            x.lastName.toLowerCase().includes(query.toLowerCase()) ||
-            x.email.toLowerCase().includes(query.toLowerCase()) ||
-            x.username.toLowerCase().includes(query.toLowerCase()) 
+          x.firstName.toLowerCase().includes(query.toLowerCase()) ||
+          x.lastName.toLowerCase().includes(query.toLowerCase()) ||
+          x.email.toLowerCase().includes(query.toLowerCase()) ||
+          x.username.toLowerCase().includes(query.toLowerCase()) 
         );
     });
 }
 
 //create new user
-function createUser(values) {
-    const newItem = {
-      id: data.users.length + 1,
-      ...values,
-    };
-   
-    data.users.push(newItem);
-    return newItem;
+async function createUser(values){
+  const data = await data();
+
+  const dupEmail = await data.findOne({email: values.email})
+  if(dupEmail){
+    throw new Error('Email in use')
+  }
+  const newItem = {
+    id: data.length + 1,
+    ...values,
+  };
+
+  item = await data.insertOne(newItem);
+  return item;
 }
 
 //register new user with validation
-function registerUser(values) {  
-    const exists = data.users.some(x => x.email === values.email);
-    if(exists) {
-      throw new Error('Email already in use.');
-    }
+async function registerUser(values) {  
+  const data = await data();  
   
-    if(values.password.length < 8) {
-      throw new Error('Password must be at least 8 characters');
-    }
+  const exists = data.users.some(x => x.email === values.email);
+  if(exists) {
+    throw new Error('Email already in use.');
+  }
   
-    const newItem = {
-      id: data.users.length + 1,
-      ...values,
-    };
+  if(values.password.length < 8) {
+    throw new Error('Password must be at least 8 characters');
+  }
   
-    data.users.push(newItem);
-    return newItem
+  const newItem = {
+    id: data.users.length + 1,
+    ...values,
+  };
+  item = await data.insertOne(newItem);
+  return item;
 }
 
 //login function
 async function  login(email, password) {
+  data = await data();
+  const item = data.find(x => x.email === email);
+  if(!item) {
+    throw new Error('User not found');
+  }
 
-    const item = data.users.find(x => x.email === email);
-    if(!item) {
-      throw new Error('User not found');
-    }
+  if(item.password !== password) {
+    throw new Error('Wrong password');
+  }
   
-    if(item.password !== password) {
-      throw new Error('Wrong password');
-    }
-  
-    const user = { ...item, password: undefined, admin: true};
-    const token = await generateJWT(user);
-    return { user, token };
+  const user = item; //{ ...item, password: undefined, admin: true};
+  const token = await generateJWT(user);
+  return { user, token };
 }
 
 //edit user
-function updateUser(newValues) {
-    const index = data.users.findIndex(p => p.id === newValues.id);
-    if(index === -1) {
-      throw new Error('User not found');
-    }
-    data.users[index] = {
-      ...data.users[index],
-      ...newValues,
-    };
-    return data.users[index];
+async function updateUser(newValues) {
+  const data = await data();
+  const id = data.findIndex(x => x.id === newValues.id);
+  const updatedItem = await data.findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    { $set: newValues},
+    { returnDocument: 'after' }
+  );
+  return updatedItem;
 }
 
 //Delete User
-function deleteUser(id) {
-    const index = data.users.findIndex(x => x.id === id);
-    if(index === -1) {
-      throw new Error('User not found');
-    }
-    data.users.splice(index, 1);
+async function deleteUser(user) {
+  const data = await data();
+  const result = await data.deleteOne(user);
+  return result;
+}
+
+async function seed(){
+
 }
 
 
@@ -142,5 +153,5 @@ function verifyJWT(token) {
 }
 
 module.exports = {
-    getAll, getUserByID, getUserByEmail, searchUserByName, createUser, updateUser, deleteUser, login, registerUser, generateJWT, verifyJWT
+    getAll, getUserByID, getUserByEmail, searchUserByName, createUser, updateUser, deleteUser, login, seed, registerUser, generateJWT, verifyJWT
   };
