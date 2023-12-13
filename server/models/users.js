@@ -21,7 +21,7 @@ async function getAll(){
 //gets user by id
 async function getUserByID(id){
   const data = await data();
-  const item = await data.findOne({ id: new ObjectId(id) });
+  const item = await data.findOne({ _id: new ObjectId(id) });
   return item;
 }
 
@@ -55,7 +55,7 @@ async function createUser(values){
     throw new Error('Email in use')
   }
   const newItem = {
-    id: data.length + 1,
+    //id: data.length + 1,
     ...values,
   };
 
@@ -77,7 +77,7 @@ async function registerUser(values) {
   }
   
   const newItem = {
-    id: data.users.length + 1,
+    //id: data.users.length + 1,
     ...values,
   };
   item = await data.insertOne(newItem);
@@ -104,9 +104,9 @@ async function  login(email, password) {
 //edit user
 async function updateUser(newValues) {
   const data = await data();
-  const id = data.findIndex(x => x.id === newValues.id);
+  const id = data.findIndex(x => x._id === newValues._id);
   const updatedItem = await data.findOneAndUpdate(
-    { _id: new ObjectId(id) },
+    { _id: new ObjectId(_id) },
     { $set: newValues},
     { returnDocument: 'after' }
   );

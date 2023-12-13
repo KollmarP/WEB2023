@@ -1,48 +1,76 @@
-const data = require('../data/exercises.json');
+//data grab
+const { connect, ObjectId } = require('./Mongo');
 
-function getExercises(){
-    return data.exercises;
+async function data() {
+  const db = await connect();
+  return db.collection('Exercises');
 }
 
-function searchExerciseByName(query){
+async function getExercises(){
+    return data();
+}
+
+async function searchExerciseByName(query){
+    return data().filter(x => {
+        return x.exerciseName.toLowerCase().includes(query.toLowerCase());
+    });
+}
+async function getExerciseByType(type){
+    return data().find(x => exercises.exercise.type === type);
+}
+async function typalSearch(type, query){
+    const data = getExerciseByType(type);
     return data.filter(x => {
         return x.exerciseName.toLowerCase().includes(query.toLowerCase());
     });
 }
-function getExerciseByID(type){
-    return data.exercises.find(x => exercises.exercise.type === type);
-}
-function addExercise(exercise){
-    exercise.id = data.exercises.length + 1;
-    data.exercises.push(exercise);
-}
-
-function updateExercise(newValues){
-    const index = data.exercises.findIndex(p => p.id === newValues.id);
-    if(index === -1) {
-      throw new Error('Exercise not found');
+async function addExercise(values){
+    const data = await data();
+  
+    const dupExercise = await data.findOne({name: values.name})
+    if(dupExercise){
+      throw new Error('Exercise Exists')
     }
-    data.users[index] = {
-      ...data.users[index],
-      ...newValues,
+    const newItem = {
+      //id: data.length + 1,
+      ...values,
     };
-    return data.users[index];
-}
+  
+    item = await data.insertOne(newItem);
+    return item;
+  }
 
-function deleteExercise(exercise) {
-    const index = data.exercises.findIndex(x => x.exercise === exercise);
-    if(!index) {
-      throw new Error('Exercise not found');
-    }
-    data.users.splice(index, 1);
-}
+//edit user
+async function updateExercise(newValues) {
+    const data = await data();
+    const id = data.findIndex(x => x._id === newValues._id);
+    const updatedItem = await data.findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: newValues},
+      { returnDocument: 'after' }
+    );
+    return updatedItem;
+  }
+  
+  //Delete User
+  async function deleteExercise(exercise) {
+    const data = await data();
+    const result = await data.deleteOne(exercise);
+    return result;
+  }
+  
+  async function seed(){
+  
+  }
 
 
 module.exports = {
     getExercises,
     searchExerciseByName,
-    getExerciseByID,
+    getExerciseByType,
+    typalSearch,
     addExercise,
     updateExercise,
-    deleteExercise
+    deleteExercise,
+    seed
 }
