@@ -15,7 +15,9 @@ console.log(JWT_EXPIRES_IN)
 
 //grabs all user data
 async function getAll(){
-  return await data();
+  const col = await data()
+  const items = await col.find().toArray()
+  return {items};
 }
 
 //gets user by id
@@ -27,6 +29,7 @@ async function getUserByID(id){
 
 //gets User by Email
 async function getUserByEmail(email){
+  console.log(email);
   const item = await data().find(x => x.email === email);
   if(!item){
     throw new Error('User not found');
@@ -67,7 +70,7 @@ async function createUser(values){
 async function registerUser(values) {  
   const data = await data();  
   
-  const exists = data.users.some(x => x.email === values.email);
+  const exists = data.users.findOne({email: values.email});
   if(exists) {
     throw new Error('Email already in use.');
   }
@@ -85,20 +88,19 @@ async function registerUser(values) {
 }
 
 //login function
-async function  login(email, password) {
-  data = await data();
-  const item = data.find(x => x.email === email);
-  if(!item) {
-    throw new Error('User not found');
+async function login(email, password) {
+  const col = await data();
+  const user = await col.findOne({ email })
+  if(!user){
+    throw new Error("Im here for you daddy ")
   }
+  if(user.password !== password){
+    throw new Error("Wrong password you fucking idiot")
+  }
+  const cleanUser = {...user, password: undefined};
+  const token = await generateJWT(cleanUser)
 
-  if(item.password !== password) {
-    throw new Error('Wrong password');
-  }
-  
-  const user = item; //{ ...item, password: undefined, admin: true};
-  const token = await generateJWT(user);
-  return { user, token };
+  return {user: cleanUser, token};
 }
 
 //edit user

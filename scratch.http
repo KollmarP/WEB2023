@@ -1,5 +1,6 @@
 ###
-http://localhost:3000
+
+GET http://localhost:3000/api/v1/users
 
 ###
 POST http://localhost:3000/api/v1/users
@@ -13,23 +14,15 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/api/v1/users/31
-Content-Type: application/json
-
-{
-  "firstName": "Rabbi Moshe"
-}
-
-###
 POST http://localhost:3000/api/v1/users/register
 Content-Type: application/json
 
 {
-  "firstName": "Moshe",
-  "lastName": "Plotkin",
-  "email": "plotkinm@newpaltz.edu",
+  "firstName": "Peter",
+  "lastName": "Generic",
+  "email": "Peter@email.com",
   "photo": "",
-  "password": "12345678"
+  "password": "Peter"
 }
 
 ###
@@ -37,6 +30,6 @@ POST http://localhost:3000/api/v1/users/login
 Content-Type: application/json
 
 {
-  "email": "plotkinm@newpaltz.edu",
-  "password": "12345678"
+  "email": "Peter@email.com",
+  "password": "Peter"
 }

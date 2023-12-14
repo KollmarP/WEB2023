@@ -27,11 +27,11 @@ app
 
     .use(parseAuthorizationToken)
 
-    .use('/api/v1/products', requireUser(), productController)
+    .use('/api/v1/exercises', productController)
     .use('/api/v1/users', userController)
 
     .get('*', (req, res) => {
-        res.sendFile(path.join( __dirname, '../client/dist/index.html') )
+        res.sendFile(path.join( __dirname, '../FitTr4Kr2/dist/index.html') )
     });
 
 app
