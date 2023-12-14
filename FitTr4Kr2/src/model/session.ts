@@ -30,7 +30,6 @@ export function api(action: string, body?: unknown, method?: string, headers?: a
     .finally(()=> session.loading--);
 }
 
-
 export function getSession(){
   return session;
 }

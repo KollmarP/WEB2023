@@ -29,9 +29,8 @@ router
     })
     .post('/login', (req, res, next) => {
         model.login(req.body.email, req.body.password)
-            .then(x => {
-                const data = { data: x, isSuccess: true };
-                res.send(data)
+            .then(user => {
+                res.send(user)
             }).catch(next);
     })
     .patch('/:id', requireUser(), (req, res, next) => {

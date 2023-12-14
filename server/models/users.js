@@ -68,23 +68,26 @@ async function createUser(values){
 
 //register new user with validation
 async function registerUser(values) {  
-  const data = await data();  
-  
-  const exists = data.users.findOne({email: values.email});
+  const col = await data();  
+
+  const exists = col.findOne({ email: values.email });
   if(exists) {
-    throw new Error('Email already in use.');
+   // throw new Error('Email already in use.');
   }
   
-  if(values.password.length < 8) {
+  /*if(values.password.length < 8) {
     throw new Error('Password must be at least 8 characters');
-  }
+  }*/
+
+values.isAdmin= false;
+values.exercises = [];
+values.friends = [];
+
+const diditWork = await col.insertOne(values)
+console.log(values)
+return values;
+ 
   
-  const newItem = {
-    //id: data.users.length + 1,
-    ...values,
-  };
-  item = await data.insertOne(newItem);
-  return item;
 }
 
 //login function
