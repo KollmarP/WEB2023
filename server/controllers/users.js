@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAll, getUserByID, searchUserByName, createUser, updateUser, deleteUser, login, registerUser } = require('../models/users');
+const { getAll, getUserByID, getUserByEmail, searchUserByName, createUser, updateUser, deleteUser, login, seed, registerUser, generateJWT, verifyJWT } = require('../models/users');
 const { requireUser } = require('../middleware/authorization');
 const router = express.Router();
 

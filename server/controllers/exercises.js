@@ -1,5 +1,5 @@
 const express = require('express');
-const { getExercises, searchExerciseByName, getExerciseByID, addExercise, updateExercise, deleteExercise } = require('../models/exercises');
+const { getExercises, searchExerciseByName, getExerciseByType, typalSearch, addExercise, updateExercise, deleteExercise, seed } = require('../models/exercises');
 const router = express.Router();
 
 router
@@ -16,7 +16,7 @@ router
         }).catch(next)
     })
     .get('/:exercise', (req, res) => {
-        getExerciseByID(req.params.id)
+        getExerciseByType(req.params.type)
         .then((results) => {
             res.send(results);
         }).catch(next)
