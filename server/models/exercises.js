@@ -1,5 +1,5 @@
 //data grab
-const { connect, ObjectId } = require('./Mongo');
+const { connect, ObjectId } = require('./mongo');
 
 async function data() {
   const db = await connect();
