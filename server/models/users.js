@@ -70,24 +70,23 @@ async function createUser(values){
 async function registerUser(values) {  
   const col = await data();  
 
-  const exists = col.findOne({ email: values.email });
+  const exists = await col.findOne({ email: values.email });
   if(exists) {
-   // throw new Error('Email already in use.');
+    throw new Error('Email already in use.'); 
   }
-  
-  /*if(values.password.length < 8) {
+  if(values.password.length < 8) {
     throw new Error('Password must be at least 8 characters');
-  }*/
+  }
+  values.isAdmin= false;
+  values.exercises = [];
+  values.friends = [];
+  const diditWork = await col.insertOne(values);
+  console.log(diditWork);
+  if(diditWork){
+    return diditWork;
+  }
+  return null;
 
-values.isAdmin= false;
-values.exercises = [];
-values.friends = [];
-
-const diditWork = await col.insertOne(values)
-console.log(values)
-return values;
- 
-  
 }
 
 //login function
@@ -95,10 +94,10 @@ async function login(email, password) {
   const col = await data();
   const user = await col.findOne({ email })
   if(!user){
-    throw new Error("Im here for you daddy ")
+    throw new Error("Email not found")
   }
   if(user.password !== password){
-    throw new Error("Wrong password you fucking idiot")
+    throw new Error("Wrong password")
   }
   const cleanUser = {...user, password: undefined};
   const token = await generateJWT(cleanUser)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-  import { serverLogin, getSession, showError } from '@/model/session';
+  import { useLogin, getSession, showError } from '@/model/session';
   import { useRouter } from 'vue-router';
   import { ref } from 'vue';
 
@@ -9,7 +9,7 @@
   const password = ref('');
 
   function login() {
-    serverLogin(email.value, password.value)
+    useLogin(email.value, password.value).login() 
       .then((user) => {
       router.push('/');
     })

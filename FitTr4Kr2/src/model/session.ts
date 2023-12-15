@@ -39,55 +39,30 @@ export function showError(err: any){
   session.messages.push({ type: "error", text: err.message ?? err});
   toast.error( err.message ?? err);
 }
-
-export function useLogin(){
+export function useLogin(email: string, password: string){
   const router = useRouter();
-
   return {
-    async login(email: string, password: string): Promise< User | null> {
+    async login(): Promise< User | null> {
       const response = await api("users/login", { email, password });
-
       session.user = response.user;
       session.token = response.token;
 
       router.push(session.redirectUrl || "/");
       return session.user;
     },
-    logout(){
+    async logout(){
       session.user = null;
       router.push("/login");
     }
   }
+
 }
-
-export async function serverLogin(email : string, password : string) : Promise<User | undefined> {
-  const person = await api('users/login', {email,password}, 'POST');
-
-  if(!person){
-    return undefined;
-  }
-
-  session.user = person.user;
-
-  if (session.user){
-    session.user.token = person.token;
-  }
-
-  return person.user;
-}
-
-export async function userRegister(firstName : string, lastName : string, email : string, photo : string, password : string) : Promise<User | undefined>{
+export async function registerUser(firstName : string, lastName : string, email : string, photo : string, password : string) : Promise<User | null>{
   const router = useRouter();
-  const person = await api('users/register', {firstName,lastName,email,photo,password},'POST');
-  if(!person){
-    return undefined;
-  }
+  const response = await api('users/register', {firstName,lastName,email,photo,password},'POST');
 
-  session.user = person.user;
-
-  if(session.user){
-    session.user.token = person.token;
-  }
-
-  return person.user;
+  session.user = response.user;
+  //session.token = response.token;
+  //router.push(session.redirectUrl || "/");
+  return useLogin(email,password).login();
 }

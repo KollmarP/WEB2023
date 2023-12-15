@@ -24,8 +24,10 @@ router
         res.send(user);
     })
     .post('/register', (req, res, next) => {
-        const user = model.registerUser(req.body);
-        res.send(user);
+        model.registerUser(req.body)
+        .then(user => {
+            res.send(user)
+        }).catch(next);
     })
     .post('/login', (req, res, next) => {
         model.login(req.body.email, req.body.password)

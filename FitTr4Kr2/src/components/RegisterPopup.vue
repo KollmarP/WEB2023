@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-  import { getSession, userRegister, serverLogin } from '@/model/session';
+  import { registerUser } from '@/model/session';
   import { useRouter } from 'vue-router';
   import { ref } from 'vue';
 
@@ -12,15 +12,10 @@
   const password = ref('');
         
   function register() {
-    userRegister(firstName.value, lastName.value, email.value, photo.value, password.value)
-      .then((user) => {
+    registerUser(firstName.value, lastName.value, email.value, photo.value, password.value)
+      .then(() => {
       router.push('/');
-    }).then((user) => {
-      serverLogin(email.value, password.value)
-        .then((user) => {
-          router.push('/');
-        })
-      })
+    })
   }
 
 </script>
