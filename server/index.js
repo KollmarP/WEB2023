@@ -5,7 +5,6 @@ const productController = require('./controllers/exercises.js');
 const userController = require('./controllers/users.js');
 const { parseAuthorizationToken, requireUser } = require('./middleware/authorization');
 const app = express();
-
 const PORT = process.env.PORT ?? 3000;
 
 console.log(`The best class at SUNY New Paltz is ${process.env.BEST_CLASS}`);
