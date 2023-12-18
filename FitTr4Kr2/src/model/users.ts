@@ -22,6 +22,10 @@ export async function getUserByEmail(email: string): Promise<User | undefined> {
   return api(`users/${email}`)
 }
 
+export async function userSearch(query: string): Promise<User[]>{
+  return api(`users/search/${query}`)
+}
+
 export function deleteUser(){
   return api('users/', undefined, 'DELETE')
 }

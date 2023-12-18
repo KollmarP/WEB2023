@@ -1,10 +1,8 @@
 import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import AdminView from '../views/AdminView.vue';
 import FriendsView from '../views/FriendsView.vue';
-import ExercisesView from '../views/ExercisesView.vue';
+import ExerciseStats from '../views/ExerciseStats.vue';
 import { getSession } from '@/model/session';
-import ExercisesVue from '@/components/Exercises.vue';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -14,21 +12,18 @@ const router = createRouter({
       name: "home",
       component: HomeView,
     },
-    { 
-      path: "/admin", 
-      name: "admin", 
-      component: AdminView
-    },    
-    { 
-      path: "/friends", 
-      name: "friends", 
-      component: FriendsView
-    },  
-    { 
-      path: "/exercises", 
-      name: "exercises", 
-      component: ExercisesView
-    },      
+    {
+      path: "/stats",
+      name: "stats",
+      component: ExerciseStats,
+      beforeEnter: requireLogin,
+    },
+    {
+      path: "/friends",
+      name: "map",
+      component: FriendsView,
+      beforeEnter: requireLogin,
+    },
   ],
 });
 

@@ -52,13 +52,12 @@ export function useLogin(email: string, password: string){
     },
     async logout(){
       session.user = null;
-      router.push("/login");
+      router.push("/");
     }
   }
 
 }
 export async function registerUser(firstName : string, lastName : string, email : string, photo : string, password : string) : Promise<User | null>{
-  const router = useRouter();
   const response = await api('users/register', {firstName,lastName,email,photo,password},'POST');
 
   session.user = response.user;
