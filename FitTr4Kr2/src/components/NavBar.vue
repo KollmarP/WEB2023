@@ -24,8 +24,10 @@ function logout() {
 </script>
 
 <template>
-  <AdminMenu  :class="{ 'is-active': isAdminMenuOpen }">
-  </AdminMenu>
+  <div v-if = session.user?.isAdmin>
+    <AdminMenu  :class="{ 'is-active': isAdminMenuOpen }">
+    </AdminMenu>
+  </div>
   <nav class="navbar is-black" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <RouterLink class="navbar-item" to="/" >

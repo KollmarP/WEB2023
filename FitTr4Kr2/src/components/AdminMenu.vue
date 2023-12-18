@@ -9,12 +9,13 @@ const session = getSession();
 const items = ref<User[]>();
 setUsers();
 async function setUsers(){
-    console.log( await getUsers())
-    const users = await getUsers().then((result) => {
-        items.value = result;
-    })
+    const result = await getUsers().then(result => result.data);
+    items.value = result;
     console.log(items.value)
 }
+
+const focus = ref<User>();
+const editMenuOpen = ref(false);
 
 function deleteUsers(user : User){
     if(user === null || user === undefined){
@@ -35,6 +36,11 @@ function deleteUsers(user : User){
                 <p class="panel-heading has-text-centered is-size-3">
                     Admin Menu
                 </p>
+                <p class="panel-tabs">
+                    <a class="is-active">All</a>
+                    <a>Distance</a>
+                    <a>Strength</a>
+                </p>
                 <div class="panel-block">
                     <p class="control has-icons-left">
                         <input class="input is-info" type="text" placeholder="Search">
@@ -43,18 +49,13 @@ function deleteUsers(user : User){
                         </span>
                     </p>
                 </div>
-                <div class="panel-block" v-for="item in items" ref="items">
-                    <span class="panel-icon">
-                        {{ item.photo }}
+                <div class="panel-block" v-for="(user, index) in items" key="index">
+                    <span class="icon">
+                        <img :src = "user?.photo" alt = ""/>
                     </span>
-                    User: {{ item.firstName }}
+                    User: {{ user.firstName }} {{ user.lastName }}/n
+                    {{ user.email }}
                 </div>
-                <a class="panel-block is-active">
-                    <span class="panel-icon">
-                        <i class="fas fa-book" aria-hidden="true"></i>
-                    </span>
-                    bulma
-                </a>
             </nav>
         </slot>
     </div>
