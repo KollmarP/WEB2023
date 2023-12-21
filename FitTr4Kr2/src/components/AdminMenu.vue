@@ -1,17 +1,65 @@
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { type User, getUsers, deleteUser } from '@/model/users';
+import { ref, computed } from 'vue';
+import { type User, getUsers, userSearch, deleteUser } from '@/model/users';
 import { getSession } from '@/model/session';
+import { OAutocomplete } from '@oruga-ui/oruga-next';
 
 
 const session = getSession();
 const items = ref<User[]>();
 setUsers();
 async function setUsers(){
-    const result = await getUsers().then(result => result.data);
-    items.value = result;
+    console.log( await getUsers())
+    const users = await getUsers().then((result) => {
+        items.value = result;
+    })
     console.log(items.value)
+}
+//Oruga components
+const isFetching = ref(false);
+const page = ref(1);
+const totalPages = ref(1);
+
+const data = ref<User[]>();
+const selected = ref<User | null>(null);
+const user = ref("");
+
+async function getAsyncData(_input) {
+    if (user.value !== _input) {
+        user.value = _input;
+        data.value = [];
+        page.value = 1;
+        totalPages.value = 1;
+    }
+
+    // String cleared
+    if (!_input.length) {
+        data.value = [];
+        page.value = 1;
+        totalPages.value = 1;
+        return;
+    }
+
+    // Reached last page
+    if (page.value > totalPages.value) {
+        return;
+    }
+
+    isFetching.value = true;
+    try {
+        const _data = await userSearch(_input).then((response) => response);
+
+        data.value = _data;
+    } catch (err) {
+        console.error(err);
+    } finally {
+        isFetching.value = false;
+    }
+}
+
+function getMoreAsyncData() {
+    getAsyncData(user.value);
 }
 
 const focus = ref<User>();
@@ -26,10 +74,10 @@ function deleteUsers(user : User){
     }
 }
 
-
 </script>
 
 <template>
+    
     <div class="flyout">
         <slot>
             <nav class="panel is-info">
@@ -43,18 +91,47 @@ function deleteUsers(user : User){
                 </p>
                 <div class="panel-block">
                     <p class="control has-icons-left">
-                        <input class="input is-info" type="text" placeholder="Search">
-                        <span class="icon is-left">
-                            <i class="fas fa-search" aria-hidden="true"></i>
-                        </span>
+                        <section>
+                            <o-field label="Find a movie">
+                                <o-autocomplete
+                                    :data="data"
+                                    placeholder="e.g. Fight Club"
+                                    field="title"
+                                    :loading="isFetching"
+                                    check-scroll
+                                    open-on-focus
+                                    :debounce="500"
+                                    @input="getAsyncData"
+                                    @select="(option: User) => (selected = option)"
+                                    @scroll-end="getMoreAsyncData">
+                                    <template #default="users">
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img
+                                                    width="32"
+                                                    :src="users.option.img" />
+                                            </div>
+                                            <div class="media-content">
+                                                {{ users.option.firstName }} {{ users.option.lastName }}
+                                                <br />
+                                                <small>
+                                                    Email: {{ users.option.email }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </o-autocomplete>
+                            </o-field>
+                            <p><b>Selected:</b> {{ selected }}</p>
+                        </section>
                     </p>
                 </div>
                 <div class="panel-block" v-for="(user, index) in items" key="index">
                     <span class="icon">
                         <img :src = "user?.photo" alt = ""/>
                     </span>
-                    User: {{ user.firstName }} {{ user.lastName }}/n
-                    {{ user.email }}
+                    User: {{ user.firstName }} {{ user.lastName }} <br>
+                    Email: {{ user.email }}
                 </div>
             </nav>
         </slot>

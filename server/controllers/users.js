@@ -11,7 +11,7 @@ router
             res.send(data)
         }).catch(next);
     })
-    .get('/search', requireUser() , (req, res, next) => {
+    .get('/search/:q', requireUser() , (req, res, next) => {
         const results = searchUserByName(req.query.q);
         res.send(results);
     })
