@@ -1,41 +1,31 @@
-import { createRouter, createWebHashHistory, type NavigationGuardNext, type RouteLocationNormalized } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import FriendsView from '../views/FriendsView.vue';
-import ExerciseStats from '../views/ExerciseStats.vue';
-import { getSession } from '@/model/session';
+import { api } from "./session";
+import { type Exercise  } from "./exercises";
 
-const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/",
-      name: "home",
-      component: HomeView,
-    },
-    {
-      path: "/stats",
-      name: "stats",
-      component: ExerciseStats,
-      beforeEnter: requireLogin,
-    },
-    {
-      path: "/friends",
-      name: "map",
-      component: FriendsView,
-      beforeEnter: requireLogin,
-    },
-  ],
-});
-
-function requireLogin(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
-  
-  const session = getSession();
-  if(!session.user){
-    session.redirectUrl = to.fullPath;
-    next('/login');
-  }else{
-    next();
-  }
+export interface User {
+  id?: number,
+  firstName: string,
+  lastName: string,
+  email: string,
+  photo: string,
+  password: string,
+  isAdmin: boolean,
+  token?: string
+  exercises : Exercise[];
+  friends : User[];
 }
 
-export default router
+export function getUsers(): Promise< User[]> {
+  return api('users'); 
+}
+
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  return api(`users/${email}`)
+}
+
+export async function userSearch(query: string): Promise<User[]>{
+  return api(`users/search/${query}`)
+}
+
+export function deleteUser(){
+  return api('users/', undefined, 'DELETE')
+}
