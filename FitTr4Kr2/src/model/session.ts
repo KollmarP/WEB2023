@@ -1,6 +1,6 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router"
-import  useToast from "vue-toastification";
+import { useToast } from "vue-toastification";
 import * as myFetch from "./myFetch";
 import { type User } from "./users";
 
