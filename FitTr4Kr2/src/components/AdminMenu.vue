@@ -25,16 +25,16 @@ const data = ref<User[]>();
 const selected = ref<User | null>(null);
 const user = ref("");
 
-async function getAsyncData(_input) {
+async function getAsyncData(_input: string | number) {
     if (user.value !== _input) {
-        user.value = _input;
+        user.value = _input.toString();
         data.value = [];
         page.value = 1;
         totalPages.value = 1;
     }
 
     // String cleared
-    if (!_input.length) {
+    if (!_input.toString().length) {
         data.value = [];
         page.value = 1;
         totalPages.value = 1;
@@ -48,7 +48,7 @@ async function getAsyncData(_input) {
 
     isFetching.value = true;
     try {
-        const _data = await userSearch(_input).then((response) => response);
+        const _data = await userSearch(_input.toString()).then((response) => response);
 
         data.value = _data;
     } catch (err) {
