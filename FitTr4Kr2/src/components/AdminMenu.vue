@@ -90,41 +90,39 @@ function deleteUsers(user : User){
                     <a>Strength</a>
                 </p>
                 <div class="panel-block">
-                    <p class="control has-icons-left">
-                        <section>
-                            <o-field label="Find a movie">
-                                <o-autocomplete
-                                    :data="data"
-                                    placeholder="e.g. Fight Club"
-                                    field="title"
-                                    :loading="isFetching"
-                                    check-scroll
-                                    open-on-focus
-                                    :debounce="500"
-                                    @input="getAsyncData"
-                                    @select="(option: User) => (selected = option)"
-                                    @scroll-end="getMoreAsyncData">
-                                    <template #default="users">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img
-                                                    width="32"
-                                                    :src="users.option.img" />
-                                            </div>
-                                            <div class="media-content">
-                                                {{ users.option.firstName }} {{ users.option.lastName }}
-                                                <br />
-                                                <small>
-                                                    Email: {{ users.option.email }}
-                                                </small>
-                                            </div>
+                    <section>
+                        <o-field label="Find a movie">
+                            <o-autocomplete
+                                :data="data"
+                                placeholder="e.g. Fight Club"
+                                field="title"
+                                :loading="isFetching"
+                                check-scroll
+                                open-on-focus
+                                :debounce="500"
+                                @input="getAsyncData"
+                                @select="(option: User) => (selected = option)"
+                                @scroll-end="getMoreAsyncData">
+                                <template #default="users">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img
+                                                width="32"
+                                                :src="users.option.img" />
                                         </div>
-                                    </template>
-                                </o-autocomplete>
-                            </o-field>
-                            <p><b>Selected:</b> {{ selected }}</p>
-                        </section>
-                    </p>
+                                        <div class="media-content">
+                                            {{ users.option.firstName }} {{ users.option.lastName }}
+                                            <br />
+                                            <small>
+                                                Email: {{ users.option.email }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </template>
+                            </o-autocomplete>
+                        </o-field>
+                        <p><b>Selected:</b> {{ selected }}</p>
+                    </section>
                 </div>
                 <div class="panel-block" v-for="(user, index) in items" key="index">
                     <span class="icon">
