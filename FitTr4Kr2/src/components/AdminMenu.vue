@@ -25,16 +25,16 @@ const data = ref<User[]>();
 const selected = ref<User | null>(null);
 const user = ref("");
 
-async function getAsyncData(_input) {
+async function getAsyncData(_input: string | number) {
     if (user.value !== _input) {
-        user.value = _input;
+        user.value = _input.toString();
         data.value = [];
         page.value = 1;
         totalPages.value = 1;
     }
 
     // String cleared
-    if (!_input.length) {
+    if (!_input.toString().length) {
         data.value = [];
         page.value = 1;
         totalPages.value = 1;
@@ -48,7 +48,7 @@ async function getAsyncData(_input) {
 
     isFetching.value = true;
     try {
-        const _data = await userSearch(_input).then((response) => response);
+        const _data = await userSearch(_input.toString()).then((response) => response);
 
         data.value = _data;
     } catch (err) {
@@ -90,41 +90,39 @@ function deleteUsers(user : User){
                     <a>Strength</a>
                 </p>
                 <div class="panel-block">
-                    <p class="control has-icons-left">
-                        <section>
-                            <o-field label="Find a movie">
-                                <o-autocomplete
-                                    :data="data"
-                                    placeholder="e.g. Fight Club"
-                                    field="title"
-                                    :loading="isFetching"
-                                    check-scroll
-                                    open-on-focus
-                                    :debounce="500"
-                                    @input="getAsyncData"
-                                    @select="(option: User) => (selected = option)"
-                                    @scroll-end="getMoreAsyncData">
-                                    <template #default="users">
-                                        <div class="media">
-                                            <div class="media-left">
-                                                <img
-                                                    width="32"
-                                                    :src="users.option.img" />
-                                            </div>
-                                            <div class="media-content">
-                                                {{ users.option.firstName }} {{ users.option.lastName }}
-                                                <br />
-                                                <small>
-                                                    Email: {{ users.option.email }}
-                                                </small>
-                                            </div>
+                    <section>
+                        <o-field label="Find a movie">
+                            <o-autocomplete
+                                :data="data"
+                                placeholder="e.g. Fight Club"
+                                field="title"
+                                :loading="isFetching"
+                                check-scroll
+                                open-on-focus
+                                :debounce="500"
+                                @input="getAsyncData"
+                                @select="(option: User) => (selected = option)"
+                                @scroll-end="getMoreAsyncData">
+                                <template #default="users">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img
+                                                width="32"
+                                                :src="users.option.img" />
                                         </div>
-                                    </template>
-                                </o-autocomplete>
-                            </o-field>
-                            <p><b>Selected:</b> {{ selected }}</p>
-                        </section>
-                    </p>
+                                        <div class="media-content">
+                                            {{ users.option.firstName }} {{ users.option.lastName }}
+                                            <br />
+                                            <small>
+                                                Email: {{ users.option.email }}
+                                            </small>
+                                        </div>
+                                    </div>
+                                </template>
+                            </o-autocomplete>
+                        </o-field>
+                        <p><b>Selected:</b> {{ selected }}</p>
+                    </section>
                 </div>
                 <div class="panel-block" v-for="(user, index) in items" key="index">
                     <span class="icon">

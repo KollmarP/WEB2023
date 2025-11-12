@@ -30,7 +30,7 @@ app
     .use('/api/v1/users', userController)
 
     .get('*', (req, res) => {
-        res.sendFile(path.join( __dirname, '../FitTr4Kr2/dist/index.html') )
+        res.sendFile(path.join( __dirname, '../FitTr4Kr2/index.html') )
     });
 
 app
