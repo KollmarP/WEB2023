@@ -7,8 +7,8 @@ import Toast from "vue-toastification";
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App).use(Oruga)
+const app = createApp(App)
 
-app.use(router).use(Toast, {})
+app.use(router).use(Toast, {}).use(Oruga)
 
 app.mount('#app')

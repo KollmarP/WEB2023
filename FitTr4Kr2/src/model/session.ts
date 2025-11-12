@@ -3,6 +3,7 @@ import { useRouter } from "vue-router"
 import { useToast } from "vue-toastification";
 import * as myFetch from "./myFetch";
 import { type User } from "./users";
+import router from "@/router";
 
 const toast = useToast();
 
@@ -61,7 +62,7 @@ export async function registerUser(firstName : string, lastName : string, email 
   const response = await api('users/register', {firstName,lastName,email,photo,password},'POST');
 
   session.user = response.user;
-  //session.token = response.token;
-  //router.push(session.redirectUrl || "/");
+  session.token = response.token;
+  router.push(session.redirectUrl || "/");
   return useLogin(email,password).login();
 }

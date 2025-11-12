@@ -29,7 +29,6 @@ async function getUserByID(id){
 
 //gets User by Email
 async function getUserByEmail(email){
-  console.log(email);
   const item = await data().find(x => x.email === email);
   if(!item){
     throw new Error('User not found');
@@ -39,14 +38,15 @@ async function getUserByEmail(email){
 
 //searches user by name, email, or username
 async function searchUserByName(query){
-    return data().filter(x => {
-        return (
-          x.firstName.toLowerCase().includes(query.toLowerCase()) ||
-          x.lastName.toLowerCase().includes(query.toLowerCase()) ||
-          x.email.toLowerCase().includes(query.toLowerCase()) ||
-          x.username.toLowerCase().includes(query.toLowerCase()) 
-        );
-    });
+    const q = String(query);
+    const col = await data();
+    const items = await col.find({
+      $or: [
+        {"firstName" : { $regex: q, $options: "i"}},
+
+      ]
+    }).toArray();
+    return {items};
 }
 
 //create new user

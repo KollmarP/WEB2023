@@ -33,3 +33,6 @@ Content-Type: application/json
   "email": "Peter@email.com",
   "password": "Peter"
 }
+
+###
+GET http://localhost:3000/api/v1/users/search/p

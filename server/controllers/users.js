@@ -11,15 +11,18 @@ router
             res.send(data)
         }).catch(next);
     })
-    .get('/search/:q', requireUser() , (req, res, next) => {
-        const results = searchUserByName(req.query.q);
-        res.send(results);
+    .get('/search/:q', (req, res, next) => {
+        model.searchUserByName(req.query.q)
+        .then(list => {
+            const data = { data: list.items, total: list.total, isSuccess: true };
+            res.send(data)
+        }).catch(next);
     })
-    .get('/:id', requireUser(), (req, res, next) => {
+    .get('/:id', (req, res, next) => {
         const user = getUserByID(+req.params.id);
         res.send( user );
     })
-    .post('/', requireUser(true), (req, res, next) => {
+    .post('/', (req, res, next) => {
         const user = createUser(req.body);
         res.send(user);
     })
@@ -35,7 +38,7 @@ router
                 res.send(user)
             }).catch(next);
     })
-    .patch('/:id', requireUser(), (req, res, next) => {
+    .patch('/:id', (req, res, next) => {
         if(req.user.id !== +req.params.id && !req.user.admin) {
             return next({
                 status: 403,
@@ -46,7 +49,7 @@ router
         const user = updateUser(req.body);
         res.send(user);
     })
-    .delete('/:id', requireUser(true), (req, res, next) => {
+    .delete('/:id', (req, res, next) => {
         deleteUser(+req.params.id);
         res.send({message: 'User removed'});
     });
